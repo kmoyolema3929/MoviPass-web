@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoviPass | Proyecto grupal</title>
+  <meta name="description" content="MoviPass: aplicación web para la gestión y venta de pasajes de transporte interprovincial en Ecuador.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0b1e; --bg-2: #1a1333;
+      --card: rgba(255,255,255,0.06); --border: rgba(255,255,255,0.12);
+      --text: #f3effa; --muted: #b4abd0;
+      --accent: #c084fc; --accent-2: #f472b6; --accent-3: #38bdf8;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    [data-theme="light"] {
+      --bg: #fdf8f3; --bg-2: #f3e8ff;
+      --card: rgba(255,255,255,0.85); --border: rgba(124,58,237,0.18);
+      --text: #2a1f3d; --muted: #6b5b86;
+      --accent: #7c3aed; --accent-2: #db2777; --accent-3: #0284c7;
+      --shadow: 0 10px 30px rgba(124,58,237,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Poppins", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 15% 10%, var(--bg-2), var(--bg) 55%);
+      background-attachment: fixed;
+      color: var(--text); line-height: 1.7;
+    }
+
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 6vw; background: var(--card);
+      backdrop-filter: blur(14px); border-bottom: 1px solid var(--border);
+    }
+    .logo { font-weight: 700; font-size: 1.2rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .links { display: flex; gap: 22px; align-items: center; }
+    .links a { color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 500; }
+    .links a:hover { color: var(--accent); }
+    #theme { background: var(--card); border: 1px solid var(--border); color: var(--text);
+      width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1rem; }
+
+    .hero { min-height: 80vh; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 60px 6vw; }
+    .badge { font-size: 0.8rem; color: var(--accent); border: 1px solid var(--border);
+      background: var(--card); padding: 6px 16px; border-radius: 999px; margin-bottom: 22px; }
+    .hero h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1.1; margin-bottom: 16px; }
+    .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { color: var(--muted); max-width: 620px; font-size: 1.05rem; }
+    .buttons { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
+    .btn { padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 600;
+      font-size: 0.95rem; transition: transform 0.2s; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn.primary { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #fff;
+      box-shadow: 0 8px 22px rgba(192,132,252,0.4); }
+    .btn.ghost { border: 1px solid var(--border); color: var(--text); background: var(--card); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 0 6vw 60px; }
+    section { padding: 50px 0 10px; }
+    h2 { font-size: 1.7rem; margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+    h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 24px; backdrop-filter: blur(10px); box-shadow: var(--shadow); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .role .icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .role h3 { font-size: 1.05rem; color: var(--accent); }
+    .role p { color: var(--muted); font-size: 0.92rem; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip { padding: 8px 18px; border-radius: 999px; font-size: 0.9rem; font-weight: 500;
+      background: rgba(192,132,252,0.14); color: var(--accent); border: 1px solid var(--border); }
+    .label { font-size: 0.85rem; color: var(--muted); margin: 14px 0 10px; }
+    .label:first-child { margin-top: 0; }
+
+    .team { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .member { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; }
+    .member b { display: block; }
+    .member small { color: var(--muted); font-size: 0.82rem; }
+    ul { padding-left: 20px; color: var(--muted); }
+
+    footer { text-align: center; padding: 30px 20px 40px; color: var(--muted); font-size: 0.88rem; }
+    @media (max-width: 600px) { .links a { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">MoviPass</div>
+    <div class="links">
+      <a href="#proyecto">Proyecto</a>
+      <a href="#roles">Roles</a>
+      <a href="#tecnologias">Tecnologías</a>
+      <a href="#equipo">Equipo</a>
+      <button id="theme" title="Cambiar tema">🌙</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="badge">🚌 Proyecto grupal · Universidad Técnica de Ambato</div>
+    <h1>Movi<span>Pass</span></h1>
+    <p>Aplicación web para la gestión y venta de pasajes de transporte interprovincial en Ecuador.</p>
+    <div class="buttons">
+      <a class="btn primary" href="https://movipass.netlify.app" target="_blank" rel="noopener">Ver demo</a>
+      <a class="btn ghost" href="https://github.com/kmoyolema3929/MoviPass" target="_blank" rel="noopener">Ver repositorio</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="proyecto">
+      <h2>El proyecto</h2>
+      <div class="card">
+        <p>MoviPass permite a las cooperativas de transporte administrar sus buses, frecuencias y rutas, y a los usuarios buscar viajes, elegir asientos y comprar su boleto.</p>
+        <p style="margin-top:14px; color: var(--muted); font-size:0.92rem;">Desarrollado para <b>Manejo y Configuración de Software</b>, Carrera de Software, FISEI, Universidad Técnica de Ambato. Usamos <b>Gitflow</b> y control de cambios formal.</p>
+      </div>
+    </section>
+
+    <section id="roles">
+      <h2>Roles del sistema</h2>
+      <div class="grid">
+        <div class="card role"><div class="icon">🛠️</div><h3>Administrador</h3><p>Crea cooperativas y su usuario gerente.</p></div>
+        <div class="card role"><div class="icon">🏢</div><h3>Cooperativa</h3><p>Gestiona buses, frecuencias, rutas y precios.</p></div>
+        <div class="card role"><div class="icon">🎫</div><h3>Oficinista</h3><p>Vende boletos y aprueba comprobantes de pago.</p></div>
+        <div class="card role"><div class="icon">🧳</div><h3>Usuario final</h3><p>Busca viajes, compra y consulta su historial.</p></div>
+        <div class="card role"><div class="icon">🚍</div><h3>Usuario bus</h3><p>Valida boletos y cobra en ruta.</p></div>
+      </div>
+    </section>
+
+    <section id="tecnologias">
+      <h2>Tecnologías</h2>
+      <div class="card">
+        <p class="label">Frontend</p>
+        <div class="chips"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">Bootstrap 5</span></div>
+        <p class="label">Backend como servicio</p>
+        <div class="chips"><span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">Auth</span><span class="chip">Storage</span></div>
+        <p class="label">Flujo de trabajo</p>
+        <div class="chips"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">Gitflow</span></div>
+      </div>
+    </section>
+
+    <section id="aporte">
+      <h2>Mi aporte</h2>
+      <div class="card">
+        <ul>
+          <li>Líder del equipo y miembro del comité de cambios.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="equipo">
+      <h2>Equipo</h2>
+      <div class="team">
+        <div class="member"><b>Katherine Moyolema</b><small>Líder · Desarrollo · Comité de cambios</small></div>
+        <div class="member"><b>Anahi Molina</b><small>Desarrollo · Comité de cambios</small></div>
+        <div class="member"><b>Alisson Paredes</b><small>Documentación · Desarrollo</small></div>
+        <div class="member"><b>Alina Ortiz</b><small>Documentación · Desarrollo</small></div>
+        <div class="member"><b>Mateo Herrera</b><small>Documentación · Desarrollo</small></div>
+        <div class="member"><b>Julio Zurita</b><small>Documentación · Desarrollo</small></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>MoviPass · Hecho con 💜 por el equipo · Ambato, Ecuador</footer>
+
+  <script>
+    const btn = document.getElementById("theme");
+    const root = document.documentElement;
+    let saved = null;
+    try { saved = localStorage.getItem("tema"); } catch (e) {}
+    if (saved === "light") { root.setAttribute("data-theme", "light"); btn.textContent = "☀️"; }
+    btn.addEventListener("click", () => {
+      const light = root.getAttribute("data-theme") === "light";
+      if (light) { root.removeAttribute("data-theme"); btn.textContent = "🌙"; }
+      else { root.setAttribute("data-theme", "light"); btn.textContent = "☀️"; }
+      try { localStorage.setItem("tema", light ? "dark" : "light"); } catch (e) {}
+    });
+  </script>
+</body>
+</html>
